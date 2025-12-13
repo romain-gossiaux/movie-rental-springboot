@@ -1,6 +1,11 @@
 package be.condorcet.movie_rental_api.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
+
 import java.math.BigDecimal;
 
 @Entity
@@ -11,13 +16,24 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Le titre est obligatoire")
     private String title;
+
+    @NotBlank(message = "Le réalisateur est obligatoire")
     private String director;
+
+    @NotNull(message = "L'année de sortie est obligatoire")
+    @Positive
     private Integer releaseYear;
 
     @Column(unique = true)
+    @Pattern(
+        regexp = "^tt[0-9]{7,8}$",
+        message = "Format invalide (ex: tt12345678)"
+    )
     private String imdbId;
 
+    @Positive(message = "Le prix doit être positif")
     private BigDecimal pricePerDay;
     private boolean available;
 
