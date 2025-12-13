@@ -1,5 +1,17 @@
 spring:
   application:
     name: movie-rental-api
+  datasource:
+    url: jdbc:postgresql://localhost:5432/movierental
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      "[hibernate.format_sql]": true
 server:
   port: 9090
