@@ -78,10 +78,12 @@ cd movie-rental-api
 ```
 
 2. Lancer PostgreSQL avec Docker
-   docker-compose up -d
-
+```bash
+docker-compose up -d
+```
 3. Lancer l'application avec Spring Boot
+```bash
    ./mvnw spring-boot:run
-
+```
 L'API est accessible sur:
   http://localhost:9090
