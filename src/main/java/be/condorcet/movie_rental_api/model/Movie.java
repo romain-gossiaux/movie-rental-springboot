@@ -26,6 +26,11 @@ public class Movie {
     @Positive
     private Integer releaseYear;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    @NotNull
+    private Category category;
+
     @Column(unique = true)
     @Pattern(
         regexp = "^tt[0-9]{7,8}$",
@@ -39,10 +44,11 @@ public class Movie {
 
     public Movie() {}
 
-    public Movie(String title, String director, Integer releaseYear, String imdbId, BigDecimal pricePerDay, boolean available) {
+    public Movie(String title, String director, Integer releaseYear, Category category, String imdbId, BigDecimal pricePerDay, boolean available) {
         this.title = title;
         this.director = director;
         this.releaseYear = releaseYear;
+        this.category = category;
         this.imdbId = imdbId;
         this.pricePerDay = pricePerDay;
         this.available = available;
