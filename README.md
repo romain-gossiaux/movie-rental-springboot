@@ -85,5 +85,7 @@ docker-compose up -d
 ```bash
    ./mvnw spring-boot:run
 ```
-L'API est accessible sur:
-  http://localhost:9090
+L'API est accessible sur :
+- http://localhost:9090/api/movies
+- http://localhost:9090/api/categories
+- http://localhost:9090/api/rentals
