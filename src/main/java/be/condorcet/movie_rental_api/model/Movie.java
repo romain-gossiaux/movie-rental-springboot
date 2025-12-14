@@ -40,18 +40,16 @@ public class Movie {
 
     @Positive(message = "Le prix doit être positif")
     private BigDecimal pricePerDay;
-    private boolean available;
 
     public Movie() {}
 
-    public Movie(String title, String director, Integer releaseYear, Category category, String imdbId, BigDecimal pricePerDay, boolean available) {
+    public Movie(String title, String director, Integer releaseYear, Category category, String imdbId, BigDecimal pricePerDay) {
         this.title = title;
         this.director = director;
         this.releaseYear = releaseYear;
         this.category = category;
         this.imdbId = imdbId;
         this.pricePerDay = pricePerDay;
-        this.available = available;
     }
 
     public Long getId() { return id; }
@@ -71,7 +69,4 @@ public class Movie {
 
     public BigDecimal getPricePerDay() { return pricePerDay; }
     public void setPricePerDay(BigDecimal pricePerDay) { this.pricePerDay = pricePerDay; }
-
-    public boolean isAvailable() { return available; }
-    public void setAvailable(boolean available) { this.available = available; }
 }

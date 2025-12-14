@@ -7,15 +7,23 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import be.condorcet.movie_rental_api.model.Rental;
+import be.condorcet.movie_rental_api.model.User;
+import be.condorcet.movie_rental_api.model.Movie;
+import be.condorcet.movie_rental_api.repository.MovieRepository;
 import be.condorcet.movie_rental_api.repository.RentalRepository;
+import be.condorcet.movie_rental_api.repository.UserRepository;
 
 @Service
 public class RentalService {
     
     private final RentalRepository rentalRepository;
+    private final UserRepository userRepository;
+    private final MovieRepository movieRepository;
 
-    public RentalService(RentalRepository rentalRepository) {
+    public RentalService(RentalRepository rentalRepository, UserRepository userRepository, MovieRepository movieRepository) {
         this.rentalRepository = rentalRepository;
+        this.userRepository = userRepository;
+        this.movieRepository = movieRepository;
     }
 
     public List<Rental> getAllRentals() {
@@ -27,6 +35,14 @@ public class RentalService {
     }
 
     public Rental saveRental(Rental rental) {
+        User user = userRepository.findById(rental.getUser().getId())
+            .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+        rental.setUser(user);
+
+        Movie movie = movieRepository.findById(rental.getMovie().getId())
+            .orElseThrow(() -> new RuntimeException("Film non trouvé"));
+        rental.setMovie(movie);
+
         boolean alreadyExists = rentalRepository.existsByUserAndMovie(rental.getUser(), rental.getMovie());
         if (alreadyExists) {
             throw new IllegalStateException("L'utilisateur a déjà loué ce film");

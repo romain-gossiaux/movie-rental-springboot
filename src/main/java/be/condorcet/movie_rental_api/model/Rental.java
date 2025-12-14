@@ -32,7 +32,7 @@ public class Rental {
     @NotNull
     private int durationDays;
 
-    @NotNull
+    @Column(nullable = false)
     private BigDecimal totalPrice;
 
     public Rental() {}

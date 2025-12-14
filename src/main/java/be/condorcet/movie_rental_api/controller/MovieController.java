@@ -46,7 +46,6 @@ public class MovieController {
                 existingMovie.setReleaseYear(movieDetails.getReleaseYear());
                 existingMovie.setImdbId(movieDetails.getImdbId());
                 existingMovie.setPricePerDay(movieDetails.getPricePerDay());
-                existingMovie.setAvailable(movieDetails.isAvailable());
 
                 Movie updatedMovie = movieService.saveMovie(existingMovie);
                 return ResponseEntity.ok(updatedMovie);
