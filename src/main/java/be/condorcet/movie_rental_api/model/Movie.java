@@ -41,15 +41,18 @@ public class Movie {
     @Positive(message = "Le prix doit être positif")
     private BigDecimal pricePerDay;
 
+    private String imageUrl;
+
     public Movie() {}
 
-    public Movie(String title, String director, Integer releaseYear, Category category, String imdbId, BigDecimal pricePerDay) {
+    public Movie(String title, String director, Integer releaseYear, Category category, String imdbId, BigDecimal pricePerDay, String imageUrl) {
         this.title = title;
         this.director = director;
         this.releaseYear = releaseYear;
         this.category = category;
         this.imdbId = imdbId;
         this.pricePerDay = pricePerDay;
+        this.imageUrl = imageUrl;
     }
 
     public Long getId() { return id; }
@@ -69,4 +72,7 @@ public class Movie {
 
     public BigDecimal getPricePerDay() { return pricePerDay; }
     public void setPricePerDay(BigDecimal pricePerDay) { this.pricePerDay = pricePerDay; }
+
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }

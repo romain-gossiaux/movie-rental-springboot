@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import be.condorcet.movie_rental_api.model.Rental;
@@ -30,12 +31,21 @@ public class RentalService {
         return rentalRepository.findAll();
     }
 
+    public List<Rental> getRentalsByUser(Authentication authentication) {
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username)
+            .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+        return rentalRepository.findByUser(user);
+    }
+
     public Optional<Rental> getRentalById(Long id) {
         return rentalRepository.findById(id);
     }
 
-    public Rental saveRental(Rental rental) {
-        User user = userRepository.findById(rental.getUser().getId())
+    public Rental createRental(Rental rental, Authentication authentication) {
+        String username = authentication.getName();
+
+        User user = userRepository.findByUsername(username)
             .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
         rental.setUser(user);
 
@@ -54,6 +64,28 @@ public class RentalService {
         );
         return rentalRepository.save(rental);
     }
+
+    public Rental updateRental(Long id, Rental rentalDetails) {
+
+        Rental rental = rentalRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Rental non trouvée"));
+
+        rental.setMovie(
+            movieRepository.findById(rentalDetails.getMovie().getId())
+                .orElseThrow(() -> new RuntimeException("Film non trouvé"))
+        );
+
+        rental.setStartDate(rentalDetails.getStartDate());
+        rental.setDurationDays(rentalDetails.getDurationDays());
+
+        rental.setTotalPrice(
+            rental.getMovie().getPricePerDay()
+                .multiply(BigDecimal.valueOf(rental.getDurationDays()))
+        );
+
+        return rentalRepository.save(rental);
+    }
+
 
     public void deleteRental(Long id) {
         rentalRepository.deleteById(id);

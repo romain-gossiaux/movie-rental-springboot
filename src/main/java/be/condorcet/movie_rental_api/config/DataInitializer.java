@@ -3,6 +3,7 @@ package be.condorcet.movie_rental_api.config;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import be.condorcet.movie_rental_api.model.Role;
 import be.condorcet.movie_rental_api.model.User;
@@ -15,7 +16,7 @@ import java.util.Set;
 public class DataInitializer {
 
     @Bean
-    CommandLineRunner initData(RoleRepository roleRepository, UserRepository userRepository) {
+    CommandLineRunner initData(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
 
             // Roles
@@ -27,14 +28,14 @@ public class DataInitializer {
 
             // Admin user
             if (userRepository.findByUsername("admin").isEmpty()) {
-                User admin = new User("admin", "password");
+                User admin = new User("admin", passwordEncoder.encode("password"));
                 admin.setRoles(Set.of(adminRole));
                 userRepository.save(admin);
             }
 
             // Simple user
             if (userRepository.findByUsername("user").isEmpty()) {
-                User user = new User("user", "password");
+                User user = new User("user", passwordEncoder.encode("password"));
                 user.setRoles(Set.of(userRole));
                 userRepository.save(user);
             }

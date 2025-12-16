@@ -5,10 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -32,8 +30,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/api/categories/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/categories/**").hasRole("ADMIN")
 
-                .requestMatchers(HttpMethod.GET, "/api/rentals/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/rentals/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/rentals/**").authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/rentals/**").authenticated()
                 .requestMatchers(HttpMethod.PUT, "/api/rentals/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/rentals/**").hasRole("ADMIN")
                 
@@ -45,13 +43,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails admin = User.withDefaultPasswordEncoder()
-            .username("admin")
-            .password("password")
-            .roles("ADMIN")
-            .build();
-
-        return new InMemoryUserDetailsManager(admin);
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
+
 }
